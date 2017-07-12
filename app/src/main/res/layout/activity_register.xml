@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_padding"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_padding"
+                android:paddingRight="@dimen/activity_padding">
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/btn_login_fb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/small_padding"
+                    android:layout_marginRight="@dimen/small_padding"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:drawablePadding="@dimen/activity_vertical_margin"
+                    android:paddingBottom="@dimen/large_padding"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="@dimen/large_padding"
+                    android:paddingRight="0dp"
+                    android:paddingStart="@dimen/large_padding"
+                    android:paddingTop="@dimen/large_padding" />
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/btn_login_google"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    app:buttonSize="wide" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:text="@string/register_or_register_with"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_padding"
+                android:paddingRight="@dimen/activity_padding">
+
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_email"
+                    style="@style/EditText.Drawable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_padding"
+                    android:drawableLeft="@drawable/ic_mail"
+                    android:drawablePadding="@dimen/medium_padding"
+                    android:hint="@string/register_hint_email"
+                    android:inputType="textEmailAddress" />
+
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_password"
+                    style="@style/EditText.Drawable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_padding"
+                    android:drawableLeft="@drawable/ic_lock"
+                    android:drawablePadding="@dimen/medium_padding"
+                    android:fontFamily="sans-serif"
+                    android:hint="@string/register_hint_password"
+                    android:inputType="textPassword" />
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_confirm_password"
+                    style="@style/EditText.Drawable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_padding"
+                    android:drawableLeft="@drawable/ic_lock"
+                    android:drawablePadding="@dimen/medium_padding"
+                    android:fontFamily="sans-serif"
+                    android:hint="@string/register_hint_confirm_password"
+                    android:inputType="textPassword" />
+
+
+                <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:height="@dimen/action_button_min_height_material"
+                    android:background="@drawable/selectable_button_green"
+                    android:text="@string/register_button_register"
+                    android:textColor="@color/white" />
+
+
+                <TextView
+                    android:id="@+id/tv_terms_privacy_policy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/medium_padding"
+                    android:text="@string/register_terms_privacy_policy"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="@dimen/text_large" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

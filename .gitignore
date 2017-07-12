@@ -1,0 +1,10 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+starterkit-b1de8-firebase-crashreporting-8pmz9-3bb37a5852.json

@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">android-starterkit</string>
+
+    <string name="facebook_app_id" translatable="false">106034073373462</string>
+    <string name="fb_login_protocol_scheme">fb106034073373462</string>
+
+    <!--Android manifest label-->
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+
+
+    <!--Alert dialog-->
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="failed">Failed</string>
+    <string name="no_response_server">No response from server.\nPlease try again later.</string>
+    <string name="process_login">Logging in your account. Please wait&#8230;</string>
+    <string name="process_register">Registering your account. Please wait&#8230;</string>
+
+    <string name="login_button_login">Login</string>
+    <string name="login_register">Register</string>
+    <string name="login_forgot_password">Forgot Password?</string>
+    <string name="login_or_login_with">or login with</string>
+    <string name="login_hint_email">Email</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+
+
+    <string name="register_button_register">Register</string>
+    <string name="register_terms_privacy_policy">By signing up, you are agree to our terms and Privacy Policy</string>
+    <string name="register_or_register_with">or register with</string>
+    <string name="register_hint_email">Email</string>
+    <string name="register_hint_password">Password</string>
+    <string name="register_hint_confirm_password">Confirm Password</string>
+    <string name="register_first_name">First name</string>
+    <string name="register_last_name">Last name</string>
+
+
+    <!--validating form-->
+    <string name="empty_editor">This editor can\'t be empty</string>
+    <string name="email_invalid">Your email format is invalid</string>
+    <string name="missmatch_password">Your confirmation password not match</string>
+    <string name="minimum_password_required">Minimum password length is 5</string>
+
+    <!--    Permissions    -->
+    <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
+    <string name="permission_rationale_camera">This feature need permission to use camera</string>
+    <string name="permission_rationale_phone_state">This feature need permission to access your phone state</string>
+    <string name="location_permission_denied">This sample requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'Google Maps API Demos\'.</string>
+    <string name="permission_required_toast">Location permission is required for this demo.</string>
+
+
+    <!--Firebase Analytics-->
+    <string name="analytics_login_facebook">login_facebook</string>
+    <string name="analytics_login_google">login_google</string>
+    <string name="analytics_register">register</string>
+</resources>
