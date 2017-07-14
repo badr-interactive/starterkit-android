@@ -1,5 +1,7 @@
 package com.bi.starterkit.model.realm;
 
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -21,10 +23,16 @@ import io.realm.annotations.PrimaryKey;
 
 public class User extends RealmObject {
     @PrimaryKey
+    @SerializedName("id")
     private String id;
+    @SerializedName("name")
     private String name;
+    @SerializedName("email")
     private String email;
+    @SerializedName("photo")
     private String photo;
+    @SerializedName("access_token")
+    private String token;
 
     public String getId() {
         return id;
@@ -56,5 +64,13 @@ public class User extends RealmObject {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -33,7 +33,7 @@ public class RealmManager {
     public static void initializeRealmConfig() {
         if (realmConfiguration == null) {
             setRealmConfiguration(new RealmConfiguration.Builder()
-                    .name("Cozer.realm")
+                    .name("starterkit.realm")
                     .deleteRealmIfMigrationNeeded()
                     .build());
         }

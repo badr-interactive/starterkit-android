@@ -62,6 +62,9 @@
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:label="@string/register" />
 
+        <activity android:name=".ui.authentication.ForgotPasswordActivity"
+            android:label="@string/forgot_password"/>
+
         <service android:name=".service.TaskService" />
         <service android:name=".service.OkhttpTaskService" />
 

@@ -27,9 +27,11 @@ public class SocialLoginRequest {
         GOOGLE
     }
     private static AUTH_MODE mode = AUTH_MODE.FACEBOOK;
+    @SerializedName("app")
+    private String app;
     @SerializedName("email")
     private String email;
-    @SerializedName(value = "facebook_token", alternate = {"google_token"})
+    @SerializedName("token")
     private String token;
     @SerializedName("device_id")
     private String deviceID;
@@ -44,6 +46,18 @@ public class SocialLoginRequest {
 
     public static void setMode(AUTH_MODE mode) {
         SocialLoginRequest.mode = mode;
+    }
+
+    public String getApp() {
+        return app;
+    }
+
+    public void setApp() {
+        if (mode == AUTH_MODE.FACEBOOK) {
+            this.app = "facebook";
+        } else {
+            this.app = "google";
+        }
     }
 
     public String getEmail() {

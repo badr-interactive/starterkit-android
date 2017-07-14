@@ -28,6 +28,7 @@ import com.bi.starterkit.controller.RealmManager;
 import com.bi.starterkit.controller.UserManager;
 import com.bi.starterkit.model.realm.User;
 import com.bi.starterkit.model.request.auth.LoginRequest;
+import com.bi.starterkit.model.request.auth.SocialLoginRequest;
 import com.bi.starterkit.service.TaskService;
 import com.bi.starterkit.ui.BaseActivity;
 import com.bi.starterkit.ui.authentication.auth.FacebookAuth;
@@ -36,6 +37,7 @@ import com.bi.starterkit.ui.main.MainActivity;
 import com.bi.starterkit.utils.FormHelper;
 import com.bi.starterkit.utils.PermissionUtils;
 import com.bi.starterkit.utils.Utils;
+import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
@@ -111,9 +113,9 @@ public class BasicLoginActivity extends BaseActivity implements View.OnClickList
         // Setup Facebook Authentication
         facebookAuth = new FacebookAuth(btnFacebook) {
             @Override
-            public void onRegistrationComplete(LoginResult loginResult) {
-                UserManager.setAuthMode(UserManager.AUTH_MODE.FACEBOOK);
-                GraphRequest request = GraphRequest.newMeRequest(
+            public void onRegistrationComplete(final LoginResult loginResult) {
+                SocialLoginRequest.setMode(SocialLoginRequest.AUTH_MODE.FACEBOOK);
+                GraphRequest graphRequest = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
@@ -121,12 +123,17 @@ public class BasicLoginActivity extends BaseActivity implements View.OnClickList
                                 Log.v("LoginActivity", response.toString());
                                 // Application code
                                 try {
-                                    String id = object.getString("id");
-                                    String email = object.getString("email");
-                                    String name = object.getString("name");
-                                    String image = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                                    String gender = object.getString("male");
-                                    //TODO request here
+                                    SocialLoginRequest request = new SocialLoginRequest();
+                                    request.setApp();
+                                    request.setDeviceID(Utils.getDeviceUuId(BasicLoginActivity.this));
+                                    request.setEmail(object.getString("email"));
+                                    request.setDeviceName(Build.MODEL);
+                                    request.setFcmToken(fcmToken);
+                                    request.setToken(loginResult.getAccessToken().getToken());
+                                    mFirebaseAnalytics.setUserProperty(getString(R.string.analytics_login_facebook), null);
+                                    progressDialog.setMessage(getString(R.string.process_login));
+                                    progressDialog.show();
+                                    getTaskService().socialLogin(request);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -134,8 +141,8 @@ public class BasicLoginActivity extends BaseActivity implements View.OnClickList
                         });
                 Bundle parameters = new Bundle();
                 parameters.putString("fields", "id, name, email, picture.type(large), gender, birthday");
-                request.setParameters(parameters);
-                request.executeAsync();
+                graphRequest.setParameters(parameters);
+                graphRequest.executeAsync();
             }
         };
 
@@ -143,9 +150,19 @@ public class BasicLoginActivity extends BaseActivity implements View.OnClickList
         googleAuth = new GoogleAuth(btnGoogle, this) {
             @Override
             public void onRegistrationComplete(GoogleSignInResult result) {
-                //TODO request here
                 GoogleSignInAccount acct = result.getSignInAccount();
-                UserManager.setAuthMode(UserManager.AUTH_MODE.GOOGLE);
+                SocialLoginRequest.setMode(SocialLoginRequest.AUTH_MODE.GOOGLE);
+                SocialLoginRequest request = new SocialLoginRequest();
+                request.setApp();
+                request.setDeviceID(Utils.getDeviceUuId(BasicLoginActivity.this));
+                request.setEmail(acct.getEmail());
+                request.setDeviceName(Build.MODEL);
+                request.setFcmToken(fcmToken);
+                request.setToken(acct.getIdToken());
+                mFirebaseAnalytics.setUserProperty(getString(R.string.analytics_login_google), null);
+                progressDialog.setMessage(getString(R.string.process_login));
+                progressDialog.show();
+                getTaskService().socialLogin(request);
             }
 
             @Override
@@ -222,11 +239,10 @@ public class BasicLoginActivity extends BaseActivity implements View.OnClickList
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
                 break;
-            case TaskService.REQ_LOGIN_FB:
-                mFirebaseAnalytics.setUserProperty(getString(R.string.analytics_login_facebook), null);
-                break;
-            case TaskService.REQ_LOGIN_GOOGLE:
-                mFirebaseAnalytics.setUserProperty(getString(R.string.analytics_login_google), null);
+            case TaskService.REQ_SOCIAL_LOGIN:
+                RealmManager.createOrUpdateObjectFromJson(realm, User.class, extras.getString(TaskService.RESPONSE_DATA));
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
                 break;
             default:
                 break;
@@ -296,11 +312,8 @@ public class BasicLoginActivity extends BaseActivity implements View.OnClickList
                     getTaskService().login(request);
                 }
                 break;
-            case R.id.btn_login_fb:
-                break;
-            case R.id.btn_login_google:
-                break;
             case R.id.tv_forgot_password:
+                startActivity(new Intent(this, ForgotPasswordActivity.class));
                 break;
             default:
                 break;

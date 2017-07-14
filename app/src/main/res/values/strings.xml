@@ -7,6 +7,7 @@
     <!--Android manifest label-->
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="forgot_password">Forgot Password</string>
 
 
     <!--Alert dialog-->
@@ -16,7 +17,9 @@
     <string name="no_response_server">No response from server.\nPlease try again later.</string>
     <string name="process_login">Logging in your account. Please wait&#8230;</string>
     <string name="process_register">Registering your account. Please wait&#8230;</string>
+    <string name="process_forgot_password">Resetting your password. Please wait&#8230;</string>
 
+    <!--login string-->
     <string name="login_button_login">Login</string>
     <string name="login_register">Register</string>
     <string name="login_forgot_password">Forgot Password?</string>
@@ -26,7 +29,7 @@
     <string name="login_with_google">Login with Google</string>
     <string name="login_with_facebook">Login with Facebook</string>
 
-
+    <!--register string-->
     <string name="register_button_register">Register</string>
     <string name="register_terms_privacy_policy">By signing up, you are agree to our terms and Privacy Policy</string>
     <string name="register_or_register_with">or register with</string>
@@ -36,6 +39,10 @@
     <string name="register_first_name">First name</string>
     <string name="register_last_name">Last name</string>
 
+    <!--string forgot password-->
+    <string name="forgot_password_title">Forgot Password?</string>
+    <string name="forgot_password_description">Enter your email and we will send instructions to reset your password</string>
+    <string name="forgot_password_submit">Submit</string>
 
     <!--validating form-->
     <string name="empty_editor">This editor can\'t be empty</string>

@@ -35,5 +35,6 @@ public class Constants {
     public static final String URL_REGISTER = BASE_URL + "/register";
     public static final String URL_LOGIN = BASE_URL + "/login";
     public static final String URL_LOGOUT = BASE_URL + "/logout";
-    public static final String URL_SOCIAL_LOGIN = BASE_URL + "/";
+    public static final String URL_SOCIAL_LOGIN = URL_LOGIN + "/social_media";
+    public static final String URL_FORGOT_PASSWORD = BASE_URL + "/forgot_password";
 }
