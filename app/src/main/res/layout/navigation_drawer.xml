@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navDrawer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:choiceMode="singleChoice"
+    android:orientation="vertical">
+
+    <include layout="@layout/drawer_header" />
+
+    <LinearLayout
+        android:id="@+id/ll_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/nav_home"
+            layout="@layout/item_navigation" />
+
+
+        <include
+            android:id="@+id/nav_other"
+            layout="@layout/item_navigation" />
+
+        <include
+            android:id="@+id/nav_share"
+            layout="@layout/item_navigation" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/nav_help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_padding"
+            android:text="@string/nav_help" />
+
+        <TextView
+            android:id="@+id/nav_tos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_padding"
+            android:text="@string/nav_tos" />
+
+        <TextView
+            android:id="@+id/nav_toa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_padding"
+            android:text="@string/nav_toa" />
+
+        <TextView
+            android:id="@+id/nav_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_padding"
+            android:text="@string/nav_about" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/nav_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_padding"
+            android:text="@string/nav_logout"
+            android:textAllCaps="true"
+            android:textAppearance="?android:textAppearanceSmall" />
+
+    </LinearLayout>
+</LinearLayout>

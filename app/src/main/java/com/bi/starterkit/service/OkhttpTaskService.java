@@ -14,13 +14,28 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.bi.starterkit.R;
+import com.bi.starterkit.data.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.GeneralSecurityException;
+import java.security.KeyStore;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Call;
 import okhttp3.CertificatePinner;
@@ -32,6 +47,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.TlsVersion;
+import okio.Buffer;
 
 /**
  * android-starterkit
@@ -83,19 +99,11 @@ public class OkhttpTaskService extends Service {
     }
 
     void addToRequestQueue(String method, String url, int reqType, RequestBody requestBody, Headers headers) {
-        Request request;
-        if (headers != null) {
-            request = new okhttp3.Request.Builder()
-                    .url(url)
-                    .method(method, method.equals(GET) ? null : requestBody)
-                    .headers(headers)
-                    .build();
-        } else {
-            request = new okhttp3.Request.Builder()
-                    .url(url)
-                    .method(method, method.equals(GET) ? null : requestBody)
-                    .build();
-        }
+        Request request = new okhttp3.Request.Builder()
+                .url(url)
+                .method(method, method.equals(GET) ? null : requestBody)
+                .headers(headers)
+                .build();
 
         if (isNetworkAvailable()) {
             if (okHttpClient == null) {
@@ -135,7 +143,6 @@ public class OkhttpTaskService extends Service {
                             result.putBoolean(RESPONSE_STATUS, responseJson.getBoolean(RESPONSE_STATUS));
                             result.putString(RESPONSE_MESSAGE, responseJson.getString(RESPONSE_MESSAGE));
                             if (responseJson.has(RESPONSE_DATA)) {
-                                Log.d("data", responseJson.get(RESPONSE_DATA).toString());
                                 result.putString(RESPONSE_DATA, responseJson.get(RESPONSE_DATA).toString());
                             }
                             sentCallback(reqType, response.isSuccessful(), result);
@@ -145,7 +152,8 @@ public class OkhttpTaskService extends Service {
                         break;
                     default:
                         try {
-                            Log.d("failed listener type", reqType + " " + responseString);
+                            Log.e(TAG, "onResponse: " + response.headers().toString());
+                            Log.d("failed listener type", reqType + " " + responseString + " " + response.code());
                             result.putString(RESPONSE_BODY, responseString);
                             JSONObject responseJson = new JSONObject(responseString);
                             result.putBoolean(RESPONSE_STATUS, responseJson.getBoolean(RESPONSE_STATUS));
@@ -165,6 +173,17 @@ public class OkhttpTaskService extends Service {
 
     @NonNull
     private OkHttpClient getOkHttpClient() {
+        X509TrustManager trustManager;
+        SSLSocketFactory sslSocketFactory;
+        try {
+            trustManager = trustManagerForCertificates(trustedCertificatesInputStream());
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, new TrustManager[]{trustManager}, null);
+            sslSocketFactory = sslContext.getSocketFactory();
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+
         ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
                 .tlsVersions(TlsVersion.TLS_1_2)
                 .cipherSuites(
@@ -174,13 +193,8 @@ public class OkhttpTaskService extends Service {
                 .build();
 
         return new OkHttpClient.Builder()
+//                .sslSocketFactory(sslSocketFactory, trustManager)
                 .connectTimeout(CONNECTION_TIMEOUT_SECOND, TimeUnit.SECONDS)
-                //use it when you need to implement specification of SSL
-//                .connectionSpecs(Collections.singletonList(spec))
-                //use this when you use certificate
-//                .certificatePinner(new CertificatePinner.Builder()
-//                        .add(CHANGE_WITH_WEB_ADDRESS, YOUR_CERTIFICATE_KEY)
-//                        .build())
                 .readTimeout(CONNECTION_READ_TIMEOUT_SECOND, TimeUnit.SECONDS)
                 .writeTimeout(CONNECTION_WRITE_TIMEOUT_SECOND, TimeUnit.SECONDS)
                 .build();
@@ -217,6 +231,64 @@ public class OkhttpTaskService extends Service {
     public class MyBinder extends Binder {
         public OkhttpTaskService getService() {
             return OkhttpTaskService.this;
+        }
+    }
+
+    private InputStream trustedCertificatesInputStream() {
+        // PEM files for root certificates of Comodo and Entrust. These two CAs are sufficient to view
+        // https://publicobject.com (Comodo) and https://squareup.com (Entrust). But they aren't
+        // sufficient to connect to most HTTPS sites including https://godaddy.com and https://visa.com.
+        // Typically developers will need to get a PEM file from their organization's TLS administrator.
+        String comodoRsaCertificationAuthority = ""
+                + Constants.COMODO_KEY;
+        String entrustRootCertificateAuthority = ""
+                + Constants.CERTIFICATE_KEY;
+        return new Buffer()
+                .writeUtf8(comodoRsaCertificationAuthority)
+                .writeUtf8(entrustRootCertificateAuthority)
+                .inputStream();
+    }
+
+    private X509TrustManager trustManagerForCertificates(InputStream in)
+            throws GeneralSecurityException {
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+        Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(in);
+        if (certificates.isEmpty()) {
+            throw new IllegalArgumentException("expected non-empty set of trusted certificates");
+        }
+
+        // Put the certificates a key store.
+        char[] password = "password".toCharArray(); // Any password will work.
+        KeyStore keyStore = newEmptyKeyStore(password);
+        int index = 0;
+        for (Certificate certificate : certificates) {
+            String certificateAlias = Integer.toString(index++);
+            keyStore.setCertificateEntry(certificateAlias, certificate);
+        }
+
+        // Use it to build an X509 trust manager.
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(
+                KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(keyStore, password);
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
+                TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init(keyStore);
+        TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+        if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+            throw new IllegalStateException("Unexpected default trust managers:"
+                    + Arrays.toString(trustManagers));
+        }
+        return (X509TrustManager) trustManagers[0];
+    }
+
+    private KeyStore newEmptyKeyStore(char[] password) throws GeneralSecurityException {
+        try {
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            InputStream in = null; // By convention, 'null' creates an empty key store.
+            keyStore.load(in, password);
+            return keyStore;
+        } catch (IOException e) {
+            throw new AssertionError(e);
         }
     }
 }

@@ -26,19 +26,12 @@ import java.security.GeneralSecurityException;
  */
 
 public class PreferenceManager {
-    private static final String TAG =  PreferenceManager.class.getSimpleName();
+    private static final String TAG = PreferenceManager.class.getSimpleName();
     private static PreferenceManager instance;
     private SecurePreferences securePreferences;
 
     private PreferenceManager(Context context) {
-        AesCbcWithIntegrity.SecretKeys keys = null;
-        try {
-            keys = AesCbcWithIntegrity.generateKeyFromPassword(Build.SERIAL, AesCbcWithIntegrity.generateSalt());
-            securePreferences = new SecurePreferences(context, keys, context.getPackageName() + ".xml");
-            Log.d(TAG, "Success to create SecurePreference");
-        } catch (GeneralSecurityException e) {
-            Log.e(TAG, "Failed to create custom key for SecurePreferences", e);
-        }
+        securePreferences = new SecurePreferences(context, Constants.SALT_KEY, context.getPackageName() + ".xml");
     }
 
     public static PreferenceManager getInstance(Context context) {
@@ -61,7 +54,7 @@ public class PreferenceManager {
     }
 
     public void storeString(String key, String value) {
-        securePreferences.edit().putString(key, value).apply();
+        securePreferences.edit().putString(key, value).commit();
     }
 
     public boolean getBoolean(String key) {
@@ -69,7 +62,7 @@ public class PreferenceManager {
     }
 
     public void storeBoolean(String key, boolean value) {
-        securePreferences.edit().putBoolean(key, value).apply();
+        securePreferences.edit().putBoolean(key, value).commit();
     }
 
     public boolean changePreferencePassword(String password, Context context) {
@@ -85,6 +78,6 @@ public class PreferenceManager {
     }
 
     public void clearPreferences() {
-        securePreferences.edit().clear().apply();
+        securePreferences.edit().clear().commit();
     }
 }

@@ -27,14 +27,28 @@ public class Constants {
      * which is packaged with this application.
      */
     private static native String getAndroidGoogleClient();
+
     private static native String getBaseUrl();
 
+    private static native String getCertificateKey();
+
+    private static native String getComodoKey();
+
+    private static native String getSaltKey();
 
     public static final String BASE_URL = getBaseUrl();
+    public static final String CERTIFICATE_KEY = getCertificateKey();
+    public static final String COMODO_KEY = getComodoKey();
     public static final String ANDROID_GOOGLE_CLIENT = getAndroidGoogleClient();
-    public static final String URL_REGISTER = BASE_URL + "/register";
-    public static final String URL_LOGIN = BASE_URL + "/login";
-    public static final String URL_LOGOUT = BASE_URL + "/logout";
-    public static final String URL_SOCIAL_LOGIN = URL_LOGIN + "/social_media";
-    public static final String URL_FORGOT_PASSWORD = BASE_URL + "/forgot_password";
+    public static final String SALT_KEY = getSaltKey();
+    public static final String URL_REGISTER = BASE_URL + "/auth/register";
+    public static final String URL_LOGIN = BASE_URL + "/auth/login";
+    public static final String URL_LOGOUT = BASE_URL + "/auth/logout";
+    public static final String URL_SOCIAL_LOGIN = BASE_URL + "/auth/social_login";
+    public static final String URL_FORGOT_PASSWORD = BASE_URL + "/auth/forgot_password";
+    public static final String URL_RESET_PASSWORD = BASE_URL + "/auth/reset_password";
+
+
+    //preference
+    public static final String LOGGED_IN = "logged_in";
 }

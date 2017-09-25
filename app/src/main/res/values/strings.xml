@@ -8,7 +8,22 @@
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="forgot_password">Forgot Password</string>
+    <string name="profile">Profile</string>
+    <string name="verification">Verification</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
 
+    <!--Navigation Drawer-->
+    <string name="nav_home">Home</string>
+    <string name="nav_bottom_navigation">Bottom Navigation</string>
+    <string name="nav_other">Other</string>
+    <string name="nav_help">Help</string>
+    <string name="nav_about">About</string>
+    <string name="nav_tos">Term of Service</string>
+    <string name="nav_toa">Term of Agreement</string>
+    <string name="nav_logout">Logout</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!--Alert dialog-->
     <string name="ok">Ok</string>
@@ -43,12 +58,17 @@
     <string name="forgot_password_title">Forgot Password?</string>
     <string name="forgot_password_description">Enter your email and we will send instructions to reset your password</string>
     <string name="forgot_password_submit">Submit</string>
+    <string name="forgot_password_have_code">I have a code</string>
 
     <!--validating form-->
     <string name="empty_editor">This editor can\'t be empty</string>
     <string name="email_invalid">Your email format is invalid</string>
     <string name="missmatch_password">Your confirmation password not match</string>
     <string name="minimum_password_required">Minimum password length is 5</string>
+
+    <!--verification-->
+    <string name="verification_hint_code">Code</string>
+    <string name="verification_description">Please kindly open your email to get the verification code</string>
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
@@ -62,4 +82,37 @@
     <string name="analytics_login_facebook">login_facebook</string>
     <string name="analytics_login_google">login_google</string>
     <string name="analytics_register">register</string>
+
+    <!--Dummy Dataa-->
+    <string-array name="dessert_names">
+        <item>Cupcake</item>
+        <item>Donut</item>
+        <item>Eclair</item>
+        <item>Froyo</item>
+        <item>Gingerbread</item>
+        <item>Honeycomb</item>
+        <item>Ice-cream Sandwich</item>
+        <item>Jelly Bean</item>
+        <item>Kitkat</item>
+        <item>Lollipop</item>
+        <item>Marshmallow</item>
+        <item>Nougat</item>
+        <item>Oreo</item>
+    </string-array>
+
+    <string-array name="dessert_descriptions">
+        <item>A small cake designed to serve one person, which may be baked in a small thin paper or aluminum cup. As with larger cakes, icing and other cake decorations, such as candy, may be applied.</item>
+        <item>A type of fried dough confectionery or dessert food.</item>
+        <item>An oblong pastry made with choux dough filled with a cream and topped with icing.</item>
+        <item>Frozen yogurt is a frozen dessert made with yogurt and sometimes other dairy products. It is usually more tart than ice cream, as well as being lower in fat. It is different from ice milk and conventional soft serve.</item>
+        <item>Refers to a broad category of baked goods, typically flavored with ginger, cloves, nutmeg or cinnamon and sweetened with honey, sugar or molasses.</item>
+        <item>A mass of hexagonal wax cells built by honey bees in their nests to contain their larvae and stores of honey and pollen. Beekeepers may remove the entire honeycomb to harvest honey.</item>
+        <item>A frozen dessert consisting of ice cream between two wafers, cookies, or other similar biscuit.</item>
+        <item>Small bean-shaped sugar candies with soft candy shells and thick gel interiors. The confection comes in a wide variety of colors and flavors.</item>
+        <item>A chocolate-covered wafer bar confection created by Rowntree of York, England, and is now produced globally by Nestle.</item>
+        <item>A type of confectionery consisting of a sweetmeat of hard candy or water-ice mounted on a stick and intended for sucking or licking. Different informal terms are used in different places, including lolly, sucker, sticky-pop, etc.</item>
+        <item>A sugar-based confection that, in its modern form, typically consists of sugar, water and gelatin which is whipped to a spongy consistency, molded into small cylindrical pieces, and coated with corn starch.</item>
+        <item>A family of confections made with sugar or honey, roasted nuts, whipped egg whites, and sometimes chopped candied fruit. The consistency of nougat is chewy, and it is used in a variety of candy bars and chocolates.</item>
+        <item>A commercial brand of cookie consisting of two chocolate wafers with a sweet creme filling in between, and (as of 1974) are marketed as "Chocolate Sandwich Cookies" on the package. The version currently sold in the United States is made by the Nabisco division of Mondelēz International.</item>
+    </string-array>
 </resources>

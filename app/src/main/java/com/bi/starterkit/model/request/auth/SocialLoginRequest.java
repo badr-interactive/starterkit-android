@@ -27,7 +27,7 @@ public class SocialLoginRequest {
         GOOGLE
     }
     private static AUTH_MODE mode = AUTH_MODE.FACEBOOK;
-    @SerializedName("app")
+    @SerializedName("provider")
     private String app;
     @SerializedName("email")
     private String email;

@@ -13,4 +13,7 @@
     <color name="fb_dark_blue">#133378</color>
     <color name="google_red">#dc4e41</color>
     <color name="google_dark_red">#b24035</color>
+
+
+    <color name="grey">#3A3A3A</color>
 </resources>

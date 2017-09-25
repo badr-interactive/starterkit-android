@@ -11,7 +11,10 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.bi.starterkit.R;
+import com.bi.starterkit.data.Constants;
+import com.bi.starterkit.data.PreferenceManager;
 import com.bi.starterkit.ui.authentication.BasicLoginActivity;
+import com.bi.starterkit.ui.drawer.DrawerActivity;
 
 /**
  * android-starterkit
@@ -46,10 +49,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashScreenActivity.this, BasicLoginActivity.class));
+                decideOpenActivity();
                 finish();
             }
         }, SPLASH_TIME_OUT);
 
+    }
+
+    private void decideOpenActivity() {
+        if (PreferenceManager.getInstance().getBoolean(Constants.LOGGED_IN)) {
+            startActivity(new Intent(this, DrawerActivity.class));
+        } else {
+            startActivity(new Intent(SplashScreenActivity.this, BasicLoginActivity.class));
+        }
     }
 }

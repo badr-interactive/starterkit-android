@@ -1,6 +1,7 @@
 package com.bi.starterkit.ui.authentication;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -105,8 +106,17 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         switch (type) {
             case TaskService.REQ_REGISTER:
                 mFirebaseAnalytics.logEvent(getString(R.string.analytics_register), null);
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.failed)
+                        .setMessage(extras.getString(TaskService.RESPONSE_MESSAGE))
+                        .setNegativeButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                finish();
+                            }
+                        })
+                        .show();
                 break;
 
         }

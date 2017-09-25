@@ -25,7 +25,8 @@ import android.widget.TextView;
 import com.bi.starterkit.R;
 import com.bi.starterkit.app.Config;
 import com.bi.starterkit.controller.RealmManager;
-import com.bi.starterkit.controller.UserManager;
+import com.bi.starterkit.data.Constants;
+import com.bi.starterkit.data.PreferenceManager;
 import com.bi.starterkit.model.realm.User;
 import com.bi.starterkit.model.request.auth.LoginRequest;
 import com.bi.starterkit.model.request.auth.SocialLoginRequest;
@@ -33,11 +34,10 @@ import com.bi.starterkit.service.TaskService;
 import com.bi.starterkit.ui.BaseActivity;
 import com.bi.starterkit.ui.authentication.auth.FacebookAuth;
 import com.bi.starterkit.ui.authentication.auth.GoogleAuth;
-import com.bi.starterkit.ui.main.MainActivity;
+import com.bi.starterkit.ui.drawer.DrawerActivity;
 import com.bi.starterkit.utils.FormHelper;
 import com.bi.starterkit.utils.PermissionUtils;
 import com.bi.starterkit.utils.Utils;
-import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
@@ -46,7 +46,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
@@ -189,7 +188,9 @@ public class BasicLoginActivity extends BaseActivity implements View.OnClickList
         forgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
 
         btnFacebook.setOnClickListener(this);
         btnGoogle.setOnClickListener(this);
@@ -236,12 +237,14 @@ public class BasicLoginActivity extends BaseActivity implements View.OnClickList
             case TaskService.REQ_LOGIN:
                 mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, null);
                 RealmManager.createOrUpdateObjectFromJson(realm, User.class, extras.getString(TaskService.RESPONSE_DATA));
-                startActivity(new Intent(this, MainActivity.class));
+                PreferenceManager.getInstance().storeBoolean(Constants.LOGGED_IN, true);
+                startActivity(new Intent(this, DrawerActivity.class));
                 finish();
                 break;
             case TaskService.REQ_SOCIAL_LOGIN:
                 RealmManager.createOrUpdateObjectFromJson(realm, User.class, extras.getString(TaskService.RESPONSE_DATA));
-                startActivity(new Intent(this, MainActivity.class));
+                PreferenceManager.getInstance().storeBoolean(Constants.LOGGED_IN, true);
+                startActivity(new Intent(this, DrawerActivity.class));
                 finish();
                 break;
             default:

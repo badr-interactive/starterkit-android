@@ -71,9 +71,9 @@
 -dontwarn io.realm.**
 
 #okhttp
+-dontwarn okhttp3.**
 -dontwarn okio.**
--dontwarn javax.annotation.Nullable
--dontwarn javax.annotation.ParametersAreNonnullByDefault
+-dontwarn javax.annotation.**
 
 #secure preference
 -keep class com.tozny.crypto.android.AesCbcWithIntegrity$PrngFixes$* { *; }

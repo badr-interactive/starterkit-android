@@ -2,6 +2,7 @@ package com.bi.starterkit.ui.authentication;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -9,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.bi.starterkit.R;
 import com.bi.starterkit.model.request.auth.ForgotPasswordRequest;
@@ -35,6 +37,7 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
 
     private ProgressDialog progressDialog;
     private Toolbar toolbar;
+    private TextView tvHaveCode;
     private TextInputEditText etEmail;
     private Button btnSubmit;
 
@@ -50,12 +53,14 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
     private void initializeView() {
         progressDialog = new ProgressDialog(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tvHaveCode = (TextView) findViewById(R.id.tv_have_code);
         etEmail = (TextInputEditText) findViewById(R.id.et_email);
         btnSubmit = (Button) findViewById(R.id.btn_submit);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        tvHaveCode.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
     }
 
@@ -119,6 +124,9 @@ public class ForgotPasswordActivity extends BaseActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_have_code:
+                startActivity(new Intent(this, VerificationActivity.class));
+                break;
             case R.id.btn_submit:
                 if (validate()) {
                     ForgotPasswordRequest request = new ForgotPasswordRequest();
