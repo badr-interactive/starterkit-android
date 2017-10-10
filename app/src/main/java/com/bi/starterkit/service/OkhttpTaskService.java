@@ -27,7 +27,6 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -38,7 +37,6 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Call;
-import okhttp3.CertificatePinner;
 import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
 import okhttp3.Headers;
@@ -98,6 +96,14 @@ public class OkhttpTaskService extends Service {
         this.activityCallback = activityCallback;
     }
 
+    /**
+     * Menambahkan request ke queue okhttp
+     * @param method merupakan method yang digunakan berupa GET atau POST
+     * @param url merupakan url tujuan untuk request
+     * @param reqType merupakan index dari request
+     * @param requestBody merupakan request body yang diperlukan
+     * @param headers merupakan headers untuk request
+     */
     void addToRequestQueue(String method, String url, int reqType, RequestBody requestBody, Headers headers) {
         Request request = new okhttp3.Request.Builder()
                 .url(url)
@@ -117,6 +123,12 @@ public class OkhttpTaskService extends Service {
         }
     }
 
+    /**
+     * merequest ke server
+     *
+     * @param request merupakan request yang telah di buat oleh okhttp
+     * @param reqType merupakan index dari request
+     */
     private void call(Request request, final int reqType) {
         Log.d(TAG, "call() called with: request = [" + request + "], tag = [" + reqType + "]");
         final Bundle result = new Bundle();
@@ -171,6 +183,9 @@ public class OkhttpTaskService extends Service {
         });
     }
 
+    /**
+     * @return okhttp-client
+     */
     @NonNull
     private OkHttpClient getOkHttpClient() {
         X509TrustManager trustManager;
@@ -200,10 +215,22 @@ public class OkhttpTaskService extends Service {
                 .build();
     }
 
+    /**
+     * Menjalankan script di UI thread
+     *
+     * @param task merupakan runnable
+     */
     private void runOnUiThread(Runnable task) {
         new Handler(Looper.getMainLooper()).post(task);
     }
 
+    /**
+     * Memanggil callback return request ke activity
+     *
+     * @param type    merupakan index dari request
+     * @param succeed merupakan status request true untuk sukses dan false untuk gagal
+     * @param bundle  merupakan data yang didiapatkan melalui request dan dikirimkan ke UI thread
+     */
     void sentCallback(final int type, final boolean succeed, final Bundle bundle) {
         runOnUiThread(new Runnable() {
             @Override
@@ -213,12 +240,20 @@ public class OkhttpTaskService extends Service {
         });
     }
 
+    /**
+     * Callback ketika tidak terdapat koneksi internet saat melakukan request
+     */
     void noInternetCallBack() {
         Bundle bundle = new Bundle();
         bundle.putString(RESPONSE_BODY, "No Internet Connection");
         activityCallback.receive(requestType, false, bundle);
     }
 
+    /**
+     * Mengecek apakah terdapat koneksi internet atau tidak
+     *
+     * @return boolean true jika terdapat koneksi internet dan false jika tidak ada
+     */
     private boolean isNetworkAvailable() {
         final ConnectivityManager connectivityManager = ((ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
@@ -234,6 +269,11 @@ public class OkhttpTaskService extends Service {
         }
     }
 
+    /**
+     * Producing trusted Certificate  input stream yang dapat dibaca oleh okhttp
+     *
+     * @return input stream certificate
+     */
     private InputStream trustedCertificatesInputStream() {
         // PEM files for root certificates of Comodo and Entrust. These two CAs are sufficient to view
         // https://publicobject.com (Comodo) and https://squareup.com (Entrust). But they aren't
@@ -249,6 +289,13 @@ public class OkhttpTaskService extends Service {
                 .inputStream();
     }
 
+    /**
+     * Method yang digunakan untuk mengembalikan trust manager pada SSL
+     *
+     * @param in input stream untuk certificate
+     * @return X509TrustManager
+     * @throws GeneralSecurityException
+     */
     private X509TrustManager trustManagerForCertificates(InputStream in)
             throws GeneralSecurityException {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
@@ -281,6 +328,13 @@ public class OkhttpTaskService extends Service {
         return (X509TrustManager) trustManagers[0];
     }
 
+    /**
+     * Method untuk mendapatkan key store
+     *
+     * @param password mengirimkan password ke keystore
+     * @return mengembalikan key store
+     * @throws GeneralSecurityException
+     */
     private KeyStore newEmptyKeyStore(char[] password) throws GeneralSecurityException {
         try {
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());

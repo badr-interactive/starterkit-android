@@ -23,6 +23,11 @@ import java.util.UUID;
 
 public class Utils {
 
+    /**
+     * Mendapatkan device UUID
+     * @param context
+     * @return
+     */
     public static String getDeviceUuId(Context context) {
         String UUID = "";
         final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
